@@ -1,10 +1,12 @@
 from pico2d import *
 import math
 
+import world
+from car import Car
+
 
 def handle_events():
     global running
-    global dir
 
     events = get_events()
     for event in events:
@@ -12,36 +14,28 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
-        elif event.key == SDLK_RIGHT:
-            if event.type == SDL_KEYDOWN: dir = 1
-            else: dir = 0
-        elif event.key == SDLK_LEFT:
-            if event.type == SDL_KEYDOWN: dir = -1
-            else: dir = 0
+        else:
+            car.handle_event(event)
 
 
 
 def reset_world():
     global running
-    global c_x, c_y, car, dir
+    global car
 
     running = True
-    dir = 0
-    car = load_image('resource\car_jeep_1.png')
-    c_x, c_y = 0, 30
+
+    car = Car()
+    world.add_object(car)
 
 
 def update_world():
-    global dir, c_x
-
-    c_x += dir*10
+    world.update()
 
 
 def render_world():
-    global c_x, c_y, car
-
     clear_canvas()
-    car.composite_draw(0, '', c_x, c_y, 250, 125)
+    world.render()
     update_canvas()
 
 
@@ -52,6 +46,6 @@ while running:
     update_world()
     render_world()
 
-    delay(0.03)
+    delay(0.02)
 
 close_canvas()
