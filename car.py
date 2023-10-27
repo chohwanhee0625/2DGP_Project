@@ -1,4 +1,5 @@
-from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT
+
 
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
@@ -14,6 +15,7 @@ def left_down(e):
 
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+
 
 class Idle:
 
@@ -39,9 +41,9 @@ class Run:
 
     @staticmethod
     def enter(car, e):
-        if right_down(e) or left_up(e): # 오른쪽으로 RUN
-            car.dir, car.face_dir= 1, 1
-        elif left_down(e) or right_up(e): # 왼쪽으로 RUN
+        if right_down(e) or left_up(e):  # 오른쪽으로 RUN
+            car.dir, car.face_dir = 1, 1
+        elif left_down(e) or right_up(e):  # 왼쪽으로 RUN
             car.dir, car.face_dir = -1, -1
 
     @staticmethod
@@ -87,7 +89,7 @@ class StateMachine:
 
 
 class Car:
-    def __init__(self, x = 400, y = 300):
+    def __init__(self, x=400, y=300):
         self.x, self.y = x, y
         self.dir = 0
         self.image = load_image('resource\car_jeep_1.png')
