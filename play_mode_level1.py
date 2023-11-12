@@ -2,8 +2,9 @@ from pico2d import *
 import game_framework
 
 import game_world
+import title_mode
+from car import Car
 
-# boy = None
 
 def handle_events():
     events = get_events()
@@ -11,35 +12,40 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            game_framework.change_mode(title_mode)
         else:
             pass
 
-def init():
-    running = True
 
-    # bird = Bird()
-    # game_world.add_object(bird, 1)
+def init():
+    global bg_image
+    global car
+
+    bg_image = load_image('resource/level1bg.png')
+
+    car = Car()
+    game_world.add_object(car, 1)
+
 
 
 def finish():
     game_world.clear()
-    pass
 
 
 def update():
     game_world.update()
-    # delay(0.1)
 
 
 def draw():
     clear_canvas()
+    bg_image.composite_draw(0, '', 600, 300, 1200, 600)
     game_world.render()
     update_canvas()
+
 
 def pause():
     pass
 
+
 def resume():
     pass
-
