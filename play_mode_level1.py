@@ -3,7 +3,7 @@ import game_framework
 
 import game_world
 import title_mode
-from car import Car
+from car_jeep import Jeep
 
 
 def handle_events():
@@ -23,7 +23,7 @@ def init():
 
     bg_image = load_image('resource/level1bg.png')
 
-    car = Car()
+    car = Jeep()
     game_world.add_object(car, 1)
 
 

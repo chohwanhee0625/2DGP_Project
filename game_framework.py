@@ -40,11 +40,12 @@ def quit():
 
 def run(start_mode):
     global running, stack
-    global frame_time
+    global frame_time, tick_count
     running = True
     stack = [start_mode]
     start_mode.init()
     frame_time = 0.0
+    tick_count = 0
     current_time = time.time()
 
     # fill here
@@ -56,6 +57,7 @@ def run(start_mode):
         # fill here
         # frame_rate = 1.0 / frame_time
         current_time += frame_time
+        tick_count += 0.01
         # print(f"Frame Time:{frame_time}, Frame Rate:{frame_rate}")
 
 

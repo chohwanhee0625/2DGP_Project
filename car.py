@@ -104,7 +104,7 @@ class Car:
     def __init__(self, x=400, y=300):
         self.x, self.y = x, y
         self.dir = 0
-        self.image = load_image('resource\car_jeep_1.png')
+        self.image = load_image('resource\car_jeep.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
