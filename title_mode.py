@@ -3,6 +3,7 @@ import game_framework
 
 import game_world
 import play_mode
+from button import Button
 
 
 def handle_events():
@@ -14,15 +15,16 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_MOUSEBUTTONUP and event.button == SDL_BUTTON_LEFT:
             mx, my = event.x, 600 - 1 - event.y
-            if mx <= 800 and mx >= 600 and my <= 500 and my >= 300:
+            print(mx, my)
+            if game_start_button.get_bb(mx, my):
                 game_framework.change_mode(play_mode)
-                pass
 
 
 def init():
-    global title_image
+    global title_image, game_start_button
 
     title_image = load_image('resource/title.png')
+    game_start_button = Button('resource/PlayButton.png', 150, 300, 291, 163)
 
 
 def finish():
@@ -38,6 +40,7 @@ def update():
 def draw():
     clear_canvas()
     title_image.composite_draw(0, '', 600, 300, 1200, 600)
+    game_start_button.draw()
     update_canvas()
 
 
