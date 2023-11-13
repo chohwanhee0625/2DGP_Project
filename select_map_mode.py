@@ -2,10 +2,8 @@ from pico2d import *
 import game_framework
 
 import game_world
-import select_map_mode
+import play_mode_level1
 from button import Button
-
-buttons = []
 
 
 def handle_events():
@@ -19,22 +17,21 @@ def handle_events():
             mx, my = event.x, 600 - 1 - event.y
             # print(mx, my)
             if game_start_button.get_bb(mx, my):
-                game_framework.change_mode(select_map_mode)
-
+                game_framework.change_mode(play_mode_level1)
 
 def init():
     global title_image
-    global buttons, game_start_button
+    global buttons, game_start_button, maps
 
-    title_image = load_image('resource/title_1.png')
+    title_image = load_image('resource/title.png')
 
-    game_start_button = Button('resource/PlayButton.png', 200, 300, 291, 163)
-    buttons.append(game_start_button)
+    left_button = Button('resource/ArrowButton.png')
+    right_button = Button('resource/ArrowButton.png')
+    game_start_button = Button('resource/PlayButton.png', )
 
-    car_select_button = Button('resource/CarSelectButton.png', 100, 130, 160, 160)
-    buttons.append(car_select_button)
-
-    game_world.add_objects(buttons)
+    map_1 = load_image('resource/level1.png')
+    map_2 = load_image('resource/level2.png')
+    map_3 = load_image('resource/level3.png')
 
 
 def finish():
@@ -50,7 +47,8 @@ def update():
 def draw():
     clear_canvas()
     title_image.composite_draw(0, '', 600, 300, 1200, 600)
-    game_world.render()
+    for b in buttons:
+        b.draw()
     update_canvas()
 
 
@@ -60,6 +58,3 @@ def pause():
 
 def resume():
     pass
-
-
-
