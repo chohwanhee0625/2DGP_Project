@@ -11,7 +11,7 @@ class Button:
         pass
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image.composite_draw(0, '', self.x, self.y, self.size_x * 2, self.size_y * 2)
         draw_rectangle(self.x - self.size_x, self.y - self.size_y, self.x + self.size_x, self.y + self.size_y)
 
     def get_bb(self, mx, my):   # 버튼 클릭 시 버튼 영역 확인
