@@ -103,6 +103,7 @@ class Jeep:
         self.image = load_image('resource/car_jeep.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        game_framework.tick_count = 0
 
     def draw(self):
         self.image.draw(self.x, self.y)
