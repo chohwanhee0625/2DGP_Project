@@ -2,7 +2,7 @@ from pico2d import draw_rectangle, load_image
 
 
 class Button:
-    def __init__(self, image = None, x = None, y = None, size_x = None, size_y = None):
+    def __init__(self, image = None, x = 0, y = 0, size_x = 0, size_y = 0):
         self.x, self.y = x, y
         self.size_x, self.size_y = size_x // 2, size_y // 2
         self.image = load_image(image)
