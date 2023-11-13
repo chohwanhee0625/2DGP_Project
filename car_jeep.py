@@ -76,6 +76,8 @@ class StateMachine:
         }
 
     def start(self):
+        global FRAME_COUNT
+        FRAME_COUNT = 0
         self.cur_state.enter(self.car, ('NONE', 0))
 
     def update(self):
