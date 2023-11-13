@@ -14,6 +14,9 @@ class Button:
         self.image.draw(self.x, self.y)
         draw_rectangle(self.x - self.size_x, self.y - self.size_y, self.x + self.size_x, self.y + self.size_y)
 
+    def update(self):
+        pass
+
     def get_bb(self, mx, my):   # 버튼 클릭 시 버튼 영역 확인
 
         if (self.x - self.size_x <= mx <= self.x + self.size_x) and (self.y - self.size_y <= my <= self.y + self.size_y):

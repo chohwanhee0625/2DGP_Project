@@ -26,7 +26,7 @@ def init():
     global title_image
     global buttons, game_start_button
 
-    title_image = load_image('resource/title.png')
+    title_image = load_image('resource/title_1.png')
 
     game_start_button = Button('resource/PlayButton.png', 200, 300, 291, 163)
     buttons.append(game_start_button)
@@ -34,6 +34,7 @@ def init():
     car_select_button = Button('resource/CarSelectButton.png', 100, 130, 160, 160)
     buttons.append(car_select_button)
 
+    game_world.add_objects(buttons)
 
 
 def finish():
@@ -49,8 +50,7 @@ def update():
 def draw():
     clear_canvas()
     title_image.composite_draw(0, '', 600, 300, 1200, 600)
-    for b in buttons:
-        b.draw()
+    game_world.render()
     update_canvas()
 
 

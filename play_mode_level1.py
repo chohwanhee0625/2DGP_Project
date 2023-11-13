@@ -14,12 +14,13 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-            pass
-
+            car.handle_event(event)
 
 def init():
     global bg_image
     global car
+
+    game_framework.tick_count = 0
 
     bg_image = load_image('resource/level1bg.png')
 
