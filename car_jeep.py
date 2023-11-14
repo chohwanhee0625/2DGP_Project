@@ -2,6 +2,7 @@ from pico2d import load_image
 from sdl2 import SDL_KEYDOWN, SDLK_UP, SDL_KEYUP
 
 import game_framework
+import map_level1 as map
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 CAR_SPEED_KMPH = 20.0  # Km / Hour

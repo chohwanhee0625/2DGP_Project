@@ -33,7 +33,7 @@ def init():
     right_button = Button('resource/ArrowButton.png')
     buttons.append(right_button)
 
-    game_start_button = Button('resource/PlayButton.png', 600, 300, 200, 100)
+    game_start_button = Button('resource/PlayButton.png', 600, 150, 200, 100)
     buttons.append(game_start_button)
 
     game_world.add_objects(buttons)
