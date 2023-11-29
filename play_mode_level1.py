@@ -4,7 +4,7 @@ import game_framework
 import game_world
 import title_mode
 from car_jeep import Jeep
-from background_level1 import InfiniteBackground as Background
+from background_level1 import FixedBackground as Background
 import server
 
 

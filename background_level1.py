@@ -1,12 +1,11 @@
 from pico2d import *
 
-from car_jeep import Jeep as Car
 import server
 class FixedBackground:
     def __init__(self):
         self.image = load_image('resource/level1bg.png')
-        self.bw = self.image.w
-        self.bh = self.image.h   # 배경 이미지의 너비, 높이
+        self.w = self.image.w
+        self.h = self.image.h   # 배경 이미지의 너비, 높이
 
         self.cw = get_canvas_width()    # 캔버스의 너비
         self.ch = get_canvas_height()   # 캔버스의 높이
@@ -22,8 +21,10 @@ class FixedBackground:
     def update(self):
         # fill here
         self.window_left = int(server.car.x) - self.cw // 2
+        self.window_bottom = int(server.car.y) - self.ch // 2
 
-        self.window_left = clamp(0, self.window_left, self.bw - self.cw - 1)
+        self.window_left = clamp(0, self.window_left, self.w - self.cw - 1)
+        self.window_bottom = clamp(0, self.window_bottom, self.h - self.ch - 1)
         pass
 
     def handle_event(self, event):
