@@ -1,0 +1,3 @@
+
+car = None
+background = None

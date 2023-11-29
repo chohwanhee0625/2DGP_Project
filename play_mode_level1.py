@@ -4,6 +4,8 @@ import game_framework
 import game_world
 import title_mode
 from car_jeep import Jeep
+from background_level1 import InfiniteBackground as Background
+import server
 
 
 def handle_events():
@@ -14,17 +16,15 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-            car.handle_event(event)
+            server.car.handle_event(event)
 
 
 def init():
-    global bg_image
-    global car
+    server.background = Background()
+    game_world.add_object(server.background, 0)
 
-    bg_image = load_image('resource/level1bg.png')
-
-    car = Jeep()
-    game_world.add_object(car, 1)
+    server.car = Jeep()
+    game_world.add_object(server.car, 1)
 
 
 
@@ -38,7 +38,6 @@ def update():
 
 def draw():
     clear_canvas()
-    bg_image.composite_draw(0, '', 600, 300, 1200, 600)
     game_world.render()
     update_canvas()
 
