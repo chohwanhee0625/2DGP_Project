@@ -34,6 +34,9 @@ def init():
     car_select_button = Button('resource/CarSelectButton.png', 100, 130, 160, 160)
     buttons.append(car_select_button)
 
+    select_button = Button('resource/button_base_s.png', 300, 130, 160, 160)
+    buttons.append(select_button)
+
     game_world.add_objects(buttons)
 
 

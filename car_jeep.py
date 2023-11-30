@@ -76,6 +76,7 @@ class Accelerate:
     @staticmethod
     def draw(car):
         car.image.draw(car.x, car.y)
+        
 
 
 class StateMachine:

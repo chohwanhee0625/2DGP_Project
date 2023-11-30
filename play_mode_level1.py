@@ -1,6 +1,6 @@
 from pico2d import *
-import game_framework
 
+import game_framework
 import game_world
 import title_mode
 from car_jeep import Jeep

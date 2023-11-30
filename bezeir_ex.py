@@ -1,36 +1,39 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
-# 주어진 y좌표 배열을 사용하여 베지에 곡선을 생성하는 함수
-def bezier_curve(y_coords):
-    n = len(y_coords) - 1
-    x = np.linspace(0, 100, len(y_coords))  # 100 간격으로 x좌표 생성
-    result = np.zeros((len(x), 2))
+# 파일을 읽어와서 Y 좌표를 저장할 리스트
+y_coords = []
 
-    for i, t in enumerate(np.linspace(0, 1, len(x))):
-        temp = np.zeros((n + 1, 2))
-        temp[:, 1] = y_coords  # 주어진 y좌표 배열을 temp 배열의 y좌표로 설정
+with open("levels/level1.txt", "r") as file:
+    for line in file:
+        y = float(line)  # 텍스트 파일에서 읽어온 문자열을 부동소수로 변환
+        y_coords.append(y)
 
-        for r in range(1, n + 1):
-            for i in range(n - r + 1):
-                temp[i] = (1 - t) * temp[i] + t * temp[i + 1]
+x_coords = [float(i * 100) for i in range(len(y_coords))]
 
-        result[i] = temp[0]  # 결과에 베지에 곡선의 좌표 저장
+print(len(y_coords))
+print(len(x_coords))
 
-    return result
 
-# 예시로 주어진 y좌표 배열
-y_coords = np.array([0, 3, 1, 4, 2])
+def cubic_bezier(t, p0, p1, p2, p3):
+    return (1 - t)**3 * p0 + 3 * (1 - t)**2 * t * p1 + 3 * (1 - t) * t**2 * p2 + t**3 * p3
 
-# 베지에 곡선 생성
-curve_points = bezier_curve(y_coords)
+curve_points = []
+for i in range(0, len(x_coords) - 3, 3):
+    p0 = np.array([x_coords[i], y_coords[i]])
+    p1 = np.array([x_coords[i + 1], y_coords[i + 1]])
+    p2 = np.array([x_coords[i + 2], y_coords[i + 2]])
+    p3 = np.array([x_coords[i + 3], y_coords[i + 3]])
+    # t 값을 0에서 1까지 등간격으로 생성
+    t_values = np.linspace(0, 1, 100)
+    # 베지어 곡선 상의 점들 계산
+    curve_points.extend([cubic_bezier(t, p0, p1, p2, p3) for t in t_values])
 
-# 결과 출력
-plt.plot(curve_points[:, 0], curve_points[:, 1], label='Bezier Curve', marker='o')
-plt.scatter(range(len(y_coords)), y_coords, color='red', label='Control Points')
-plt.legend()
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.title('Bezier Curve with Control Points')
-plt.grid(True)
-plt.show()
+# 베지어 곡선 상의 x, y 좌표
+curve_x = np.array(curve_points)[:, 0]
+curve_y = np.array(curve_points)[:, 1]
+
+# 베지어 곡선 상의 x, y 좌표를 출력 (테스트용)
+for i in range(len(curve_x)):
+    print(f"({curve_x[i]}, {curve_y[i]})")
+
+print(len(curve_x))
