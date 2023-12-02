@@ -95,7 +95,8 @@ class StateMachine:
         self.cur_state.do(self.car)
         self.car.frame = (self.car.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         self.car.x += self.car.speed * game_framework.frame_time
-        self.car.y -= 0.5 * GRAVITY * game_framework.tick_count * game_framework.tick_count
+        self.car.y -= (0.5 * GRAVITY * game_framework.tick_count * game_framework.tick_count
+                       * game_framework.frame_time * 100)
         self.car.y = clamp(100, self.car.y, server.background.h - 100)
 
     def handle_event(self, e):
