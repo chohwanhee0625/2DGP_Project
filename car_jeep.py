@@ -1,5 +1,5 @@
 from pico2d import load_image, clamp, get_canvas_width, get_canvas_height
-from sdl2 import SDL_KEYDOWN, SDLK_UP, SDL_KEYUP
+from sdl2 import SDL_KEYDOWN, SDLK_UP, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT
 
 import game_framework
 import map_level1 as map
@@ -22,16 +22,23 @@ ACCELERATION = 5.0
 
 def up_button_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
-
-
 def up_button_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
+def right_button_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+def right_button_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+def left_button_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+def left_button_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+
 
 
 class Decelerate:
     @staticmethod
     def enter(car, e):
-        # print('decel')
+        print('decel')
         pass
 
     @staticmethod
@@ -56,7 +63,7 @@ class Decelerate:
 class Accelerate:
     @staticmethod
     def enter(car, e):
-        # print('accel')
+        print('accel')
         pass
 
     @staticmethod
@@ -76,7 +83,88 @@ class Accelerate:
     @staticmethod
     def draw(car):
         car.image.draw(car.x, car.y)
-        
+
+
+class RollFront:
+    @staticmethod
+    def enter(car, e):
+        print('rollfront')
+        pass
+
+    @staticmethod
+    def do(car):
+        pass
+
+    @staticmethod
+    def exit(car, e):
+        pass
+
+    @staticmethod
+    def draw(car):
+        car.image.draw(car.x, car.y)
+
+
+class RollBack:
+    @staticmethod
+    def enter(car, e):
+        print('rollback')
+        pass
+
+    @staticmethod
+    def do(car):
+        pass
+
+    @staticmethod
+    def exit(car, e):
+        pass
+
+    @staticmethod
+    def draw(car):
+        car.image.draw(car.x, car.y)
+
+class RollFrontAcc:
+    @staticmethod
+    def enter(car, e):
+        print('rollfrontacc')
+        pass
+
+    @staticmethod
+    def do(car):
+        global FRAMES_PER_ACTION
+
+        FRAMES_PER_ACTION += 1
+        FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
+        pass
+
+    @staticmethod
+    def exit(car, e):
+        pass
+
+    @staticmethod
+    def draw(car):
+        car.image.draw(car.x, car.y)
+
+class RollBackAcc:
+    @staticmethod
+    def enter(car, e):
+        print('rollbackacc')
+        pass
+
+    @staticmethod
+    def do(car):
+        global FRAMES_PER_ACTION
+
+        FRAMES_PER_ACTION += 1
+        FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
+        pass
+
+    @staticmethod
+    def exit(car, e):
+        pass
+
+    @staticmethod
+    def draw(car):
+        car.image.draw(car.x, car.y)
 
 
 class StateMachine:
@@ -84,8 +172,14 @@ class StateMachine:
         self.cur_state = Decelerate
         self.car = car
         self.table = {
-            Decelerate: {up_button_down: Accelerate},
-            Accelerate: {up_button_up: Decelerate}
+            Decelerate: {up_button_down: Accelerate,
+                         left_button_down: RollBack, right_button_down: RollFront},
+            Accelerate: {up_button_up: Decelerate,
+                         left_button_down: RollBackAcc, right_button_down: RollFrontAcc},
+            RollBack: {up_button_down: RollBackAcc, left_button_up: Decelerate},
+            RollFront: {up_button_down: RollFrontAcc, right_button_up: Decelerate},
+            RollBackAcc: {up_button_up: RollBack, left_button_up: Accelerate},
+            RollFrontAcc: {up_button_up: RollFront, right_button_up: Accelerate}
         }
 
     def start(self):
@@ -121,12 +215,15 @@ class Jeep:
         self.image = load_image('resource/car_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.dir = 0
         game_framework.tick_count = 0
 
     def draw(self):
         sx = self.x - server.background.window_left
         sy = self.y - server.background.window_bottom
-        self.image.clip_draw(int(self.frame) * 182, 0, 182, 137, sx, sy)
+        # sx, sy = get_canvas_width() // 2, get_canvas_height() // 2
+        self.image.clip_composite_draw(int(self.frame) * 180, 0, 182, 137, self.dir, '', sx, sy, 182, 137)
+
 
     def update(self):
         self.state_machine.update()
