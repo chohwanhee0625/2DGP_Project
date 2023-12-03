@@ -95,7 +95,7 @@ class RollFront:
 
     @staticmethod
     def do(car):
-        car.dir -= 2
+        car.dir -= math.radians(2)
         pass
 
     @staticmethod
@@ -115,7 +115,7 @@ class RollBack:
 
     @staticmethod
     def do(car):
-        car.dir += 2
+        car.dir += math.radians(2)
         pass
 
     @staticmethod
@@ -136,10 +136,12 @@ class RollFrontAcc:
     def do(car):
         global FRAMES_PER_ACTION
 
+        car.speed += ACCELERATION
+        car.speed = clamp(0, car.speed, CAR_SPEED_PPS)
         FRAMES_PER_ACTION += 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
 
-        car.dir -= 2
+        car.dir -= math.radians(2)
         pass
 
     @staticmethod
@@ -160,10 +162,12 @@ class RollBackAcc:
     def do(car):
         global FRAMES_PER_ACTION
 
+        car.speed += ACCELERATION
+        car.speed = clamp(0, car.speed, CAR_SPEED_PPS)
         FRAMES_PER_ACTION += 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
 
-        car.dir += 2
+        car.dir += math.radians(2)
         pass
 
     @staticmethod
@@ -232,13 +236,13 @@ class Jeep:
         else:
             sx = get_canvas_width() // 2
 
-        rad = math.radians(self.dir)
-        self.image.clip_composite_draw(int(self.frame) * 180, 0, 182, 137, rad, '', sx, self.y, 182, 137)
+        self.image.clip_composite_draw(int(self.frame) * 180, 0, 182, 137, self.dir, '', sx, self.y, 182, 137)
 
 
     def update(self):
         self.state_machine.update()
         self.y = clamp(50, self.y, server.background.h - 50)
+        # self.dir = ???    # map 에서 두 바퀴에 해당하는 좌표값 2개 읽어와서 뺄셈 <x, y> , self.dir = atan2(y/x)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
