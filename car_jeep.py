@@ -219,15 +219,12 @@ class Jeep:
         game_framework.tick_count = 0
 
     def draw(self):
-        sx = self.x - server.background.window_left
-        sy = self.y - server.background.window_bottom
-        # sx, sy = get_canvas_width() // 2, get_canvas_height() // 2
-        self.image.clip_composite_draw(int(self.frame) * 180, 0, 182, 137, self.dir, '', sx, sy, 182, 137)
+        sx = get_canvas_width() // 2
+        self.image.clip_composite_draw(int(self.frame) * 180, 0, 182, 137, self.dir, '', sx, self.y, 182, 137)
 
 
     def update(self):
         self.state_machine.update()
-        self.x = clamp(50, self.x, server.background.w - 50)
         self.y = clamp(50, self.y, server.background.h - 50)
 
     def handle_event(self, event):
