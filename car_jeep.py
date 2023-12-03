@@ -1,13 +1,15 @@
+import math
+
 from pico2d import load_image, clamp, get_canvas_width, get_canvas_height
 from sdl2 import SDL_KEYDOWN, SDLK_UP, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT
 
 import game_framework
 import map_level1 as map
-from background_level1 import InfiniteBackground as Background
+from background import InfiniteBackground as Background
 import server
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-CAR_MAX_SPEED_KMPH = 100.0  # Km / Hour
+CAR_MAX_SPEED_KMPH = 70.0  # Km / Hour
 CAR_SPEED_MPM = (CAR_MAX_SPEED_KMPH * 1000.0 / 60.0)
 CAR_SPEED_MPS = (CAR_SPEED_MPM / 60.0)
 CAR_SPEED_PPS = (CAR_SPEED_MPS * PIXEL_PER_METER)
@@ -93,6 +95,7 @@ class RollFront:
 
     @staticmethod
     def do(car):
+        car.dir -= 2
         pass
 
     @staticmethod
@@ -112,6 +115,7 @@ class RollBack:
 
     @staticmethod
     def do(car):
+        car.dir += 2
         pass
 
     @staticmethod
@@ -134,6 +138,8 @@ class RollFrontAcc:
 
         FRAMES_PER_ACTION += 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
+
+        car.dir -= 2
         pass
 
     @staticmethod
@@ -156,6 +162,8 @@ class RollBackAcc:
 
         FRAMES_PER_ACTION += 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
+
+        car.dir += 2
         pass
 
     @staticmethod
@@ -176,10 +184,10 @@ class StateMachine:
                          left_button_down: RollBack, right_button_down: RollFront},
             Accelerate: {up_button_up: Decelerate,
                          left_button_down: RollBackAcc, right_button_down: RollFrontAcc},
-            RollBack: {up_button_down: RollBackAcc, left_button_up: Decelerate},
-            RollFront: {up_button_down: RollFrontAcc, right_button_up: Decelerate},
-            RollBackAcc: {up_button_up: RollBack, left_button_up: Accelerate},
-            RollFrontAcc: {up_button_up: RollFront, right_button_up: Accelerate}
+            RollBack: {up_button_down: RollBackAcc, left_button_up: Decelerate, right_button_down: RollFront},
+            RollFront: {up_button_down: RollFrontAcc, right_button_up: Decelerate, left_button_down: RollBack},
+            RollBackAcc: {up_button_up: RollBack, left_button_up: Accelerate, right_button_down: RollFrontAcc},
+            RollFrontAcc: {up_button_up: RollFront, right_button_up: Accelerate, left_button_down: RollBackAcc}
         }
 
     def start(self):
@@ -215,12 +223,17 @@ class Jeep:
         self.image = load_image('resource/car_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.dir = 0
+        self.dir = 0.0
         game_framework.tick_count = 0
 
     def draw(self):
-        sx = get_canvas_width() // 2
-        self.image.clip_composite_draw(int(self.frame) * 180, 0, 182, 137, self.dir, '', sx, self.y, 182, 137)
+        if self.x <= get_canvas_width() // 2:
+            sx = self.x
+        else:
+            sx = get_canvas_width() // 2
+
+        rad = math.radians(self.dir)
+        self.image.clip_composite_draw(int(self.frame) * 180, 0, 182, 137, rad, '', sx, self.y, 182, 137)
 
 
     def update(self):

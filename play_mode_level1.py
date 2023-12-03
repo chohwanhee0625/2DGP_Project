@@ -4,7 +4,7 @@ import game_framework
 import game_world
 import title_mode
 from car_jeep import Jeep
-from background_level1 import InfiniteBackground as Background
+from background import InfiniteBackground as Background
 import server
 
 
@@ -20,7 +20,7 @@ def handle_events():
 
 
 def init():
-    server.background = Background()
+    server.background = Background('resource/level1bg.png')
     game_world.add_object(server.background, 0)
 
     server.car = Jeep()

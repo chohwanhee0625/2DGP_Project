@@ -40,6 +40,7 @@ def Bezier(filepath):
     # print(len(curve_x))
 
     return list(zip(curve_x, curve_y))
+    # return dict(zip(curve_x, curve_y))    # 고민중
 
 # data = Bezier("levels/level1.txt")
 # print(data)

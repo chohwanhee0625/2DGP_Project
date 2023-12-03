@@ -60,8 +60,8 @@ cy = 700 // 600
 
 class InfiniteBackground:
 
-    def __init__(self):
-        self.image = load_image('resource/level1bg.png')
+    def __init__(self, imagePath = None):
+        self.image = load_image(imagePath)
         self.cw = get_canvas_width()
         self.ch = get_canvas_height()
         self.w = self.image.w
