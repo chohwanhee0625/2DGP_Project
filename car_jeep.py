@@ -203,7 +203,7 @@ class StateMachine:
         self.car.x += self.car.speed * game_framework.frame_time
         self.car.y -= (0.5 * GRAVITY * game_framework.tick_count * game_framework.tick_count
                        * game_framework.frame_time * 100)
-        self.car.y = clamp(100, self.car.y, server.background.h - 100)
+        self.car.y = clamp(150, self.car.y, server.background.h)
 
     def handle_event(self, e):
         for check_event, next_state in self.table[self.cur_state].items():

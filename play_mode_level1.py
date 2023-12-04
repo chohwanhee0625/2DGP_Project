@@ -4,6 +4,7 @@ import game_framework
 import game_world
 import title_mode
 import server
+from bezier import Bezier
 
 from car_jeep import Jeep
 from background import InfiniteBackground as Background
@@ -29,7 +30,8 @@ def init():
     server.car = Jeep()
     game_world.add_object(server.car, 2)
 
-    server.map = Map('resource/level1ground.png')
+    map_level1 = Bezier("levels/level1.txt")
+    server.map = Map('resource/level1ground.png', map_level1)
     game_world.add_object(server.map, 1)
 
 
