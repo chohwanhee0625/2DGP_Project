@@ -9,7 +9,7 @@ from background import InfiniteBackground as Background
 import server
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-CAR_MAX_SPEED_KMPH = 70.0  # Km / Hour
+CAR_MAX_SPEED_KMPH = 100.0  # Km / Hour
 CAR_SPEED_MPM = (CAR_MAX_SPEED_KMPH * 1000.0 / 60.0)
 CAR_SPEED_MPS = (CAR_SPEED_MPM / 60.0)
 CAR_SPEED_PPS = (CAR_SPEED_MPS * PIXEL_PER_METER)
@@ -241,7 +241,6 @@ class Jeep:
 
     def update(self):
         self.state_machine.update()
-        self.y = clamp(50, self.y, server.background.h - 50)
         # self.dir = ???    # map 에서 두 바퀴에 해당하는 좌표값 2개 읽어와서 뺄셈 <x, y> , self.dir = atan2(y/x)
 
     def handle_event(self, event):

@@ -3,9 +3,12 @@ from pico2d import *
 import game_framework
 import game_world
 import title_mode
+import server
+
 from car_jeep import Jeep
 from background import InfiniteBackground as Background
-import server
+from map_level1 import Map
+
 
 
 def handle_events():
@@ -24,8 +27,10 @@ def init():
     game_world.add_object(server.background, 0)
 
     server.car = Jeep()
-    game_world.add_object(server.car, 1)
+    game_world.add_object(server.car, 2)
 
+    server.map = Map('resource/level1ground.png')
+    game_world.add_object(server.map, 1)
 
 
 def finish():

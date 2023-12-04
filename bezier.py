@@ -4,7 +4,6 @@ import numpy as np
 def cubic_bezier(t, p0, p1, p2, p3):
     return (1 - t) ** 3 * p0 + 3 * (1 - t) ** 2 * t * p1 + 3 * (1 - t) * t ** 2 * p2 + t ** 3 * p3
 
-
 def Bezier(filepath):
     # 파일을 읽어와서 Y 좌표를 저장할 리스트
     y_coords = []
@@ -34,12 +33,15 @@ def Bezier(filepath):
     curve_x = np.array(curve_points)[:, 0]
     curve_y = np.array(curve_points)[:, 1]
 
+
+
     # 베지어 곡선 상의 x, y 좌표를 출력 (테스트용)
     # for i in range(len(curve_x)):
     #     print(f"({curve_x[i]}, {curve_y[i]})")
     # print(len(curve_x))
 
-    return list(zip(curve_x, curve_y))
+    # 정수로 변환된 (x, y) 좌표를 튜플 리스트로 반환
+    return list(zip(map(int, curve_x), map(int, curve_y)))
     # return dict(zip(curve_x, curve_y))    # 고민중
 
 # data = Bezier("levels/level1.txt")
