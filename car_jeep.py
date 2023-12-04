@@ -4,7 +4,7 @@ from pico2d import load_image, clamp, get_canvas_width, get_canvas_height
 from sdl2 import SDL_KEYDOWN, SDLK_UP, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT
 
 import game_framework
-import map_level1 as map
+import map as map
 from background import InfiniteBackground as Background
 import server
 

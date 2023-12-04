@@ -1,5 +1,6 @@
 from pico2d import *
 
+import clear_mode
 import game_framework
 import game_world
 import title_mode
@@ -8,7 +9,7 @@ from bezier import Bezier
 
 from car_jeep import Jeep
 from background import InfiniteBackground as Background
-from map_level1 import Map
+from map import Map
 
 
 
@@ -40,6 +41,10 @@ def finish():
 
 
 def update():
+    if server.car.x >= max(server.map.maplist, key=lambda item: item[0])[0] - 200:
+        print('clear')
+        game_framework.change_mode(clear_mode)
+        pass
     game_world.update()
 
 
