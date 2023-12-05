@@ -1,5 +1,5 @@
 # # 텍스트 파일 열기
-# with open("levels/level2.txt", "r") as file:
+# with open("levels/level3.txt", "r") as file:
 #     lines = file.readlines()
 #
 # # 각 줄의 부동소수점 숫자를 읽어와서 변환하여 새로운 값을 계산하고 리스트에 저장
@@ -12,7 +12,7 @@
 #     except ValueError:
 #         print(f"Wrong type: {line.strip()}")
 #
-# with open("levels/level2.txt", "w") as file:
+# with open("levels/level3.txt", "w") as file:
 #     for new_number in new_numbers:
 #         file.write(str(new_number) + "\n")
 #

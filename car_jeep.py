@@ -201,9 +201,20 @@ class StateMachine:
         self.cur_state.do(self.car)
         self.car.frame = (self.car.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         self.car.x += self.car.speed * game_framework.frame_time
-        self.car.y -= (0.5 * GRAVITY * game_framework.tick_count * game_framework.tick_count
-                       * game_framework.frame_time * 100)
-        self.car.y = clamp(150, self.car.y, server.background.h)
+
+        if self.car.y >= server.map.maplist[self.car.find_closest_key(self.car.x)] + 50:
+            self.car.y -= (0.5 * GRAVITY * game_framework.tick_count * game_framework.tick_count
+                           * game_framework.frame_time * 100)
+            # self.car.y = clamp(150, self.car.y, server.background.h)
+        else:
+            game_framework.tick_count = 0
+            self.car.y = server.map.maplist[self.car.find_closest_key(self.car.x)] + 50
+            dx = 160
+            dy = server.map.maplist[self.car.find_closest_key(self.car.x + 80)] - server.map.maplist[
+                self.car.find_closest_key(self.car.x - 80)]
+            self.car.dir = math.atan2(dy, dx)
+
+
 
     def handle_event(self, e):
         for check_event, next_state in self.table[self.cur_state].items():
@@ -252,3 +263,4 @@ class Jeep:
     def find_closest_key(self, target):
         closest_key = min(server.map.maplist, key=lambda x: abs(x - target))
         return closest_key
+
