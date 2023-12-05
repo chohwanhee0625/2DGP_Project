@@ -19,10 +19,13 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            game_framework.change_mode(title_mode)
         elif event.type == SDL_MOUSEBUTTONUP and event.button == SDL_BUTTON_LEFT:
             mx, my = event.x, 600 - 1 - event.y
             # print(mx, my)
+            if back_button.get_bb(mx, my):
+                game_framework.change_mode(title_mode)
+
             if left_button.get_bb(mx, my):
                 map_count -= 1
             if right_button.get_bb(mx, my):
@@ -39,7 +42,7 @@ def handle_events():
 
 def init():
     global title_image, map_1, map_2, map_3
-    global buttons, game_start_button, maps, left_button, right_button
+    global buttons, game_start_button, maps, left_button, right_button, back_button
     global map_count
 
     map_count = 0
@@ -54,6 +57,9 @@ def init():
 
     game_start_button = Button('resource/PlayButton.png', 600, 100, 200, 100)
     buttons.append(game_start_button)
+
+    back_button = Button('resource/ArrowButton.png', 60, 530, 70, 70, 'h')
+    buttons.append(back_button)
 
     game_world.add_objects(buttons)
 

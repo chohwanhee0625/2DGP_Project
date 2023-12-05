@@ -27,7 +27,7 @@ def handle_events():
 
 
 def init():
-    global start_time
+    global start_time, font
 
     server.background = Background('resource/level2bg.png')
     game_world.add_object(server.background, 0)
@@ -40,6 +40,7 @@ def init():
     game_world.add_object(server.map, 1)
 
     start_time = get_time()
+    font = load_font('resource/dpcomic.ttf', 35)
 
 def finish():
     game_world.clear()
@@ -49,7 +50,7 @@ def update():
     if server.car.x >= max(server.map.maplist.keys()):
         print('clear')
         finish_time = get_time() - start_time
-        print(f'{finish_time}s')
+        print(f'{finish_time:.2f}s')
         server.car.car_sound = None
         game_framework.change_mode(clear_mode)
     game_world.update()
@@ -58,6 +59,10 @@ def update():
 def draw():
     clear_canvas()
     game_world.render()
+
+    time_now = get_time() - start_time
+    font.draw(20, 570, f'{time_now:.2f}s', (0, 0, 0))
+
     update_canvas()
 
 

@@ -40,7 +40,7 @@ def left_button_down(e):
 class Decelerate:
     @staticmethod
     def enter(car, e):
-        print('decel')
+        # print('decel')
         car.car_sound = load_wav('sound/EngineIdling.wav')
         car.car_sound.repeat_play()
         pass
@@ -69,7 +69,7 @@ class Accelerate:
     def enter(car, e):
         car.car_sound = load_wav('sound/AcceleEnter.wav')
         car.car_sound.repeat_play()
-        print('accel')
+        # print('accel')
         pass
 
     @staticmethod
@@ -97,7 +97,7 @@ class Accelerate:
 class RollFront:
     @staticmethod
     def enter(car, e):
-        print('rollfront')
+        # print('rollfront')
         car.car_sound = load_wav('sound/EngineIdling.wav')
         car.car_sound.repeat_play()
         pass
@@ -119,7 +119,7 @@ class RollFront:
 class RollBack:
     @staticmethod
     def enter(car, e):
-        print('rollback')
+        # print('rollback')
         car.car_sound = load_wav('sound/EngineIdling.wav')
         car.car_sound.repeat_play()
         pass
@@ -142,7 +142,7 @@ class RollFrontAcc:
     def enter(car, e):
         car.car_sound = load_wav('sound/AcceleEnter.wav')
         car.car_sound.repeat_play()
-        print('rollfrontacc')
+        # print('rollfrontacc')
         pass
 
     @staticmethod
@@ -170,7 +170,7 @@ class RollBackAcc:
     def enter(car, e):
         car.car_sound = load_wav('sound/AcceleEnter.wav')
         car.car_sound.repeat_play()
-        print('rollbackacc')
+        # print('rollbackacc')
         pass
 
     @staticmethod
@@ -228,6 +228,8 @@ class StateMachine:
             dy = server.map.maplist[self.car.find_closest_key(self.car.x + 80)] - server.map.maplist[
                 self.car.find_closest_key(self.car.x - 80)]
             self.car.dir = math.atan2(dy, dx)
+            if self.car.dir >= math.pi / 2:
+                print('die')
 
 
 
