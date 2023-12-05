@@ -2,17 +2,18 @@ from pico2d import draw_rectangle, load_image
 
 
 class Button:
-    def __init__(self, image = None, x = 0, y = 0, size_x = 0, size_y = 0):
+    def __init__(self, image = None, x = 0, y = 0, size_x = 0, size_y = 0, flip = ''):
         self.x, self.y = x, y
         self.size_x, self.size_y = size_x // 2, size_y // 2
         self.image = load_image(image)
+        self.flip = flip
 
     def handle_event(self):
         pass
 
     def draw(self):
-        self.image.composite_draw(0, '', self.x, self.y, self.size_x * 2, self.size_y * 2)
-        draw_rectangle(self.x - self.size_x, self.y - self.size_y, self.x + self.size_x, self.y + self.size_y)
+        self.image.composite_draw(0, self.flip, self.x, self.y, self.size_x * 2, self.size_y * 2)
+        # draw_rectangle(self.x - self.size_x, self.y - self.size_y, self.x + self.size_x, self.y + self.size_y)
 
     def update(self):
         pass
