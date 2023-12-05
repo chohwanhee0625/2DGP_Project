@@ -17,17 +17,18 @@ def handle_events():
 
 
 def init():
-    global clear_time, font, image
+    global gameover_time, font, image
 
     font = load_font('resource/dpcomic.ttf', 50)
 
-    image = load_image('resource/cleargamebg.png')
+    image = load_image('resource/gameoverbg.png')
 
-    sound = load_wav('sound/Applause.wav')
+    sound = load_wav('sound/Gameover.wav')
     sound.set_volume(30)
     sound.play()
 
-    print(f'{clear_time}s')
+    print(f'{gameover_time}s')
+
     pass
 
 def finish():
@@ -44,7 +45,7 @@ def draw():
     game_world.render()
     image.composite_draw(0, '', 600, 300, 600, 300)
     font.draw(400, 50, 'Exit to press \'ESC\'')
-    font.draw(550, 200, f'{clear_time:.2f}s')
+    font.draw(550, 100, f'{gameover_time:.2f}s')
     update_canvas()
 
 

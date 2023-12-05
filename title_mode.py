@@ -2,7 +2,9 @@ from pico2d import *
 
 import game_framework
 import game_world
+import select_car_mode
 import select_map_mode
+import shop_mode
 
 from button import Button
 
@@ -40,11 +42,17 @@ def handle_events():
             # print(mx, my)
             if game_start_button.get_bb(mx, my):
                 game_framework.change_mode(select_map_mode)
+            if car_select_button.get_bb(mx, my):
+                game_framework.change_mode(select_car_mode)
+            if shop_button.get_bb(mx, my):
+                game_framework.change_mode(shop_mode)
+
 
 
 def init():
     global title_image
-    global buttons, game_start_button, bgm
+    global buttons, bgm
+    global car_select_button, shop_button, game_start_button
 
     title_image = load_image('resource/title_1.png')
 
@@ -54,8 +62,8 @@ def init():
     car_select_button = Button('resource/CarSelectButton.png', 100, 130, 160, 160)
     buttons.append(car_select_button)
 
-    select_button = Button('resource/button_base_s.png', 300, 130, 160, 160)
-    buttons.append(select_button)
+    shop_button = Button('resource/ShopButton.png', 300, 130, 160, 160)
+    buttons.append(shop_button)
 
     game_world.add_objects(buttons)
 

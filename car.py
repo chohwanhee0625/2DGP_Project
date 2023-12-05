@@ -9,17 +9,26 @@ from background import InfiniteBackground as Background
 import server
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-CAR_MAX_SPEED_KMPH = 100.0  # Km / Hour
+CAR_MAX_SPEED_KMPH = server.max_speed  # Km / Hour
 CAR_SPEED_MPM = (CAR_MAX_SPEED_KMPH * 1000.0 / 60.0)
 CAR_SPEED_MPS = (CAR_SPEED_MPM / 60.0)
 CAR_SPEED_PPS = (CAR_SPEED_MPS * PIXEL_PER_METER)
+ACCELERATION = server.acceleration
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
-GRAVITY = 5.0
-ACCELERATION = 5.0
+CAR_GRAVITY_KMPH = 50.0
+CAR_GRAVITY_MPM = (CAR_GRAVITY_KMPH * 1000.0 / 60.0)
+CAR_GRAVITY_MPS = (CAR_GRAVITY_MPM / 60.0)
+CAR_GRAVITY_PPS = (CAR_GRAVITY_MPS * PIXEL_PER_METER)
+GRAVITY = 1.0
+
+CAR_ROLL_KMPH = math.radians(server.roll_speed)
+CAR_ROLL_MPM = (CAR_ROLL_KMPH * 1000.0 / 60.0)
+CAR_ROLL_MPS = (CAR_ROLL_MPM / 60.0)
+CAR_ROLL_PPS = (CAR_ROLL_MPS * PIXEL_PER_METER)
 
 
 def up_button_up(e):
@@ -40,7 +49,7 @@ def left_button_down(e):
 class Decelerate:
     @staticmethod
     def enter(car, e):
-        print('decel')
+        # print('decel')
         car.car_sound = load_wav('sound/EngineIdling.wav')
         car.car_sound.repeat_play()
         pass
@@ -53,6 +62,12 @@ class Decelerate:
         car.speed = clamp(0, car.speed, CAR_SPEED_PPS)
         FRAMES_PER_ACTION -= 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
+
+        car.Gspeed += 0.1
+        car.Gspeed = clamp(0, car.Gspeed, CAR_GRAVITY_PPS)
+
+        car.inertia -= 0.1
+        car.inertia = clamp(0, car.inertia, 2)
         pass
 
     @staticmethod
@@ -69,7 +84,7 @@ class Accelerate:
     def enter(car, e):
         car.car_sound = load_wav('sound/AcceleEnter.wav')
         car.car_sound.repeat_play()
-        print('accel')
+        # print('accel')
         pass
 
     @staticmethod
@@ -81,6 +96,11 @@ class Accelerate:
         FRAMES_PER_ACTION += 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
 
+        car.Gspeed += 0.1
+        car.Gspeed = clamp(0, car.Gspeed, CAR_GRAVITY_PPS)
+
+        car.inertia += 0.1
+        car.inertia = clamp(0, car.inertia, 2)
         # car.car_sound = load_wav('sound/MaxSpeed.wav')
         # car.car_sound.play()
         pass
@@ -97,14 +117,24 @@ class Accelerate:
 class RollFront:
     @staticmethod
     def enter(car, e):
-        print('rollfront')
+        # print('rollfront')
         car.car_sound = load_wav('sound/EngineIdling.wav')
         car.car_sound.repeat_play()
         pass
 
     @staticmethod
     def do(car):
-        car.dir -= math.radians(2)
+        car.speed -= ACCELERATION
+        car.speed = clamp(0, car.speed, CAR_SPEED_PPS)
+
+        car.Gspeed += 0.1
+        car.Gspeed = clamp(0, car.Gspeed, CAR_GRAVITY_PPS)
+
+        car.inertia -= 0.1
+        car.inertia = clamp(0, car.inertia, 2)
+
+        car.dir -= CAR_ROLL_PPS * game_framework.frame_time
+
         pass
 
     @staticmethod
@@ -119,14 +149,23 @@ class RollFront:
 class RollBack:
     @staticmethod
     def enter(car, e):
-        print('rollback')
+        # print('rollback')
         car.car_sound = load_wav('sound/EngineIdling.wav')
         car.car_sound.repeat_play()
         pass
 
     @staticmethod
     def do(car):
-        car.dir += math.radians(2)
+        car.speed -= ACCELERATION
+        car.speed = clamp(0, car.speed, CAR_SPEED_PPS)
+
+        car.Gspeed += 0.1
+        car.Gspeed = clamp(0, car.Gspeed, CAR_GRAVITY_PPS)
+
+        car.inertia -= 0.1
+        car.inertia = clamp(0, car.inertia, 2)
+
+        car.dir += CAR_ROLL_PPS * game_framework.frame_time
         pass
 
     @staticmethod
@@ -142,7 +181,7 @@ class RollFrontAcc:
     def enter(car, e):
         car.car_sound = load_wav('sound/AcceleEnter.wav')
         car.car_sound.repeat_play()
-        print('rollfrontacc')
+        # print('rollfrontacc')
         pass
 
     @staticmethod
@@ -154,7 +193,13 @@ class RollFrontAcc:
         FRAMES_PER_ACTION += 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
 
-        car.dir -= math.radians(2)
+        car.Gspeed += 0.1
+        car.Gspeed = clamp(0, car.Gspeed, CAR_GRAVITY_PPS)
+
+        car.inertia -= 0.1
+        car.inertia = clamp(0, car.inertia, 2)
+
+        car.dir -= CAR_ROLL_PPS * game_framework.frame_time
         pass
 
     @staticmethod
@@ -170,7 +215,7 @@ class RollBackAcc:
     def enter(car, e):
         car.car_sound = load_wav('sound/AcceleEnter.wav')
         car.car_sound.repeat_play()
-        print('rollbackacc')
+        # print('rollbackacc')
         pass
 
     @staticmethod
@@ -182,7 +227,13 @@ class RollBackAcc:
         FRAMES_PER_ACTION += 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
 
-        car.dir += math.radians(2)
+        car.Gspeed += 0.1
+        car.Gspeed = clamp(0, car.Gspeed, CAR_GRAVITY_PPS)
+
+        car.inertia -= 0.1
+        car.inertia = clamp(0, car.inertia, 2)
+
+        car.dir += CAR_ROLL_PPS * game_framework.frame_time
         pass
 
     @staticmethod
@@ -218,11 +269,11 @@ class StateMachine:
         self.car.x += self.car.speed * game_framework.frame_time
 
         if self.car.y >= server.map.maplist[self.car.find_closest_key(self.car.x)] + 50:
-            self.car.y -= (0.5 * GRAVITY * game_framework.tick_count * game_framework.tick_count
-                           * game_framework.frame_time * 100)
+            self.car.y -= (0.5 * GRAVITY * self.car.Gspeed * self.car.Gspeed
+                           * game_framework.frame_time * 100 - self.car.inertia)
             # self.car.y = clamp(150, self.car.y, server.background.h)
         else:
-            game_framework.tick_count = 0
+            self.car.Gspeed = 0.0
             self.car.y = server.map.maplist[self.car.find_closest_key(self.car.x)] + 50
             dx = 160
             dy = server.map.maplist[self.car.find_closest_key(self.car.x + 80)] - server.map.maplist[
@@ -245,30 +296,34 @@ class StateMachine:
         self.cur_state.draw(self.car)
 
 
-class Jeep:
+class CAR:
     car_sound = None
     def __init__(self):
         self.x, self.y = 250, 300
-        self.speed = 0
+        self.speed = 0.0
+        self.Gspeed = 1.0
         self.frame = 0
-        self.image = load_image('resource/car_sheet.png')
+        self.image = load_image(server.car_image)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.dir = 0.0
+        self.inertia = 0.0
         game_framework.tick_count = 0
 
-        if not Jeep.car_sound:
-            Jeep.car_sound = load_wav('sound/EngineStart.wav')
-            Jeep.car_sound.set_volume(30)
-            Jeep.car_sound.play()
+        if not CAR.car_sound:
+            CAR.car_sound = load_wav('sound/EngineStart.wav')
+            CAR.car_sound.set_volume(30)
+            CAR.car_sound.play()
 
     def draw(self):
-        if self.x <= get_canvas_width() // 2:
-            sx = self.x
-        else:
-            sx = get_canvas_width() // 2
+        # if self.x <= get_canvas_width() // 2:
+        #     sx = self.x
+        # else:
+        sx = get_canvas_width() // 2
 
-        self.image.clip_composite_draw(int(self.frame) * 180, 0, 182, 137, self.dir, '', sx, self.y, 182, 137)
+        # print(ACCELERATION, CAR_ROLL_KMPH, CAR_MAX_SPEED_KMPH)
+
+        self.image.clip_composite_draw(int(self.frame) * server.model_x, 0, 180, 137, self.dir, '', sx, self.y, 180, 137)
 
 
     def update(self):
@@ -285,4 +340,7 @@ class Jeep:
         closest_key = min(server.map.maplist, key=lambda x: abs(x - target))
         return closest_key
 
+    def game_over(self):
+
+        pass
 
