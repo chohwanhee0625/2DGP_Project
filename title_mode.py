@@ -8,6 +8,25 @@ from button import Button
 
 buttons = []
 
+class BGM:
+    bgm = None
+    def __init__(self):
+        if not BGM.bgm:
+            BGM.bgm = load_music('sound/Background.mp3')
+            BGM.bgm.set_volume(40)
+
+    def handle_event(self):
+        pass
+    def draw(self):
+        pass
+    def update(self):
+        pass
+    def stop_music(self):
+        BGM.bgm.stop()
+    def start_music(self):
+        BGM.bgm.repeat_play()
+
+
 
 def handle_events():
     events = get_events()
@@ -25,7 +44,7 @@ def handle_events():
 
 def init():
     global title_image
-    global buttons, game_start_button
+    global buttons, game_start_button, bgm
 
     title_image = load_image('resource/title_1.png')
 
@@ -39,6 +58,10 @@ def init():
     buttons.append(select_button)
 
     game_world.add_objects(buttons)
+
+    bgm = BGM()
+    game_world.add_object(bgm)
+    bgm.start_music()
 
 
 def finish():

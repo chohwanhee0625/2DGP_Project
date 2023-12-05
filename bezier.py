@@ -33,8 +33,6 @@ def Bezier(filepath):
     curve_x = np.array(curve_points)[:, 0]
     curve_y = np.array(curve_points)[:, 1]
 
-
-
     # 베지어 곡선 상의 x, y 좌표를 출력 (테스트용)
     # for i in range(len(curve_x)):
     #     print(f"({curve_x[i]}, {curve_y[i]})")
@@ -42,7 +40,7 @@ def Bezier(filepath):
 
     # 정수로 변환된 (x, y) 좌표를 튜플 리스트로 반환
     # return list(zip(map(int, curve_x), map(int, curve_y)))
-    return dict(zip(map(int, curve_x), map(int, curve_y)))    # 고민중
+    return dict(zip(map(int, curve_x), map(int, curve_y)))    # dict 로!
 
 # data = Bezier("levels/level1.txt")
 # print(data)

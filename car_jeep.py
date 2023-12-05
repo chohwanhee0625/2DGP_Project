@@ -1,6 +1,6 @@
 import math
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, load_wav
 from sdl2 import SDL_KEYDOWN, SDLK_UP, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT
 
 import game_framework
@@ -18,7 +18,7 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
-GRAVITY = 9.8
+GRAVITY = 5.0
 ACCELERATION = 5.0
 
 
@@ -41,6 +41,8 @@ class Decelerate:
     @staticmethod
     def enter(car, e):
         print('decel')
+        car.car_sound = load_wav('sound/EngineIdling.wav')
+        car.car_sound.repeat_play()
         pass
 
     @staticmethod
@@ -65,6 +67,8 @@ class Decelerate:
 class Accelerate:
     @staticmethod
     def enter(car, e):
+        car.car_sound = load_wav('sound/AcceleEnter.wav')
+        car.car_sound.repeat_play()
         print('accel')
         pass
 
@@ -76,6 +80,9 @@ class Accelerate:
         car.speed = clamp(0, car.speed, CAR_SPEED_PPS)
         FRAMES_PER_ACTION += 1
         FRAMES_PER_ACTION = clamp(0, FRAMES_PER_ACTION, 10)
+
+        # car.car_sound = load_wav('sound/MaxSpeed.wav')
+        # car.car_sound.play()
         pass
 
     @staticmethod
@@ -91,6 +98,8 @@ class RollFront:
     @staticmethod
     def enter(car, e):
         print('rollfront')
+        car.car_sound = load_wav('sound/EngineIdling.wav')
+        car.car_sound.repeat_play()
         pass
 
     @staticmethod
@@ -111,6 +120,8 @@ class RollBack:
     @staticmethod
     def enter(car, e):
         print('rollback')
+        car.car_sound = load_wav('sound/EngineIdling.wav')
+        car.car_sound.repeat_play()
         pass
 
     @staticmethod
@@ -129,6 +140,8 @@ class RollBack:
 class RollFrontAcc:
     @staticmethod
     def enter(car, e):
+        car.car_sound = load_wav('sound/AcceleEnter.wav')
+        car.car_sound.repeat_play()
         print('rollfrontacc')
         pass
 
@@ -155,6 +168,8 @@ class RollFrontAcc:
 class RollBackAcc:
     @staticmethod
     def enter(car, e):
+        car.car_sound = load_wav('sound/AcceleEnter.wav')
+        car.car_sound.repeat_play()
         print('rollbackacc')
         pass
 
@@ -231,6 +246,7 @@ class StateMachine:
 
 
 class Jeep:
+    car_sound = None
     def __init__(self):
         self.x, self.y = 250, 300
         self.speed = 0
@@ -240,6 +256,11 @@ class Jeep:
         self.state_machine.start()
         self.dir = 0.0
         game_framework.tick_count = 0
+
+        if not Jeep.car_sound:
+            Jeep.car_sound = load_wav('sound/EngineStart.wav')
+            Jeep.car_sound.set_volume(30)
+            Jeep.car_sound.play()
 
     def draw(self):
         if self.x <= get_canvas_width() // 2:
@@ -263,4 +284,5 @@ class Jeep:
     def find_closest_key(self, target):
         closest_key = min(server.map.maplist, key=lambda x: abs(x - target))
         return closest_key
+
 

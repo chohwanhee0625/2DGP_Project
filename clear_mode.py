@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 
 import game_world
+import play_mode_level1
 import server
 import title_mode
 
@@ -16,6 +17,7 @@ def handle_events():
 
 
 def init():
+
     pass
 
 def finish():

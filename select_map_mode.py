@@ -5,6 +5,7 @@ import game_world
 import play_mode_level1
 import play_mode_level2
 import play_mode_level3
+import title_mode
 from button import Button
 
 buttons = []
@@ -64,6 +65,7 @@ def init():
 
 
 def finish():
+    title_mode.bgm.stop_music()
     game_world.clear()
     pass
 
