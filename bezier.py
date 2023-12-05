@@ -41,8 +41,8 @@ def Bezier(filepath):
     # print(len(curve_x))
 
     # 정수로 변환된 (x, y) 좌표를 튜플 리스트로 반환
-    return list(zip(map(int, curve_x), map(int, curve_y)))
-    # return dict(zip(curve_x, curve_y))    # 고민중
+    # return list(zip(map(int, curve_x), map(int, curve_y)))
+    return dict(zip(map(int, curve_x), map(int, curve_y)))    # 고민중
 
 # data = Bezier("levels/level1.txt")
 # print(data)

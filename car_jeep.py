@@ -248,3 +248,7 @@ class Jeep:
 
     def get_bb(self):
         pass
+
+    def find_closest_key(self, target):
+        closest_key = min(server.map.maplist, key=lambda x: abs(x - target))
+        return closest_key

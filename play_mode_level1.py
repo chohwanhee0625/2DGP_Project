@@ -41,10 +41,9 @@ def finish():
 
 
 def update():
-    if server.car.x >= max(server.map.maplist, key=lambda item: item[0])[0] - 200:
-        print('clear')
-        game_framework.change_mode(clear_mode)
-        pass
+    # if server.car.x >= max(server.map.maplist, key=lambda item: item[0])[0] - 200:
+    #     print('clear')
+    #     game_framework.change_mode(clear_mode)
     game_world.update()
 
 
