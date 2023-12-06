@@ -279,6 +279,8 @@ class StateMachine:
             dy = server.map.maplist[self.car.find_closest_key(self.car.x + 80)] - server.map.maplist[
                 self.car.find_closest_key(self.car.x - 80)]
             self.car.dir = math.atan2(dy, dx)
+            if self.car.dir >= math.pi / 2:
+                print('die')
 
 
 
