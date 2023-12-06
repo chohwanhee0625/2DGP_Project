@@ -24,17 +24,20 @@ def handle_events():
             if back_button.get_bb(mx, my):
                 game_framework.change_mode(title_mode)
             if engine_button.get_bb(mx, my):
+                server.coin_count -= 1
                 server.acceleration += 1.0
             if trans_button.get_bb(mx, my):
+                server.coin_count -= 1
                 server.max_speed += 10
             if wheel_button.get_bb(mx, my):
+                server.coin_count -= 1
                 server.roll_speed += 2
 
 
 
 
 def init():
-    global title_image
+    global title_image, font, coin_image
     global buttons, back_button, engine_button, trans_button, wheel_button
 
     title_image = load_image('resource/shop_bg.png')
@@ -50,6 +53,9 @@ def init():
 
     wheel_button = Button('resource/button_wheel.png', 900, 300, 200, 200)
     buttons.append(wheel_button)
+
+    font = load_font('resource/dpcomic.ttf', 35)
+    coin_image = load_image('resource/Coin.png')
 
     game_world.add_objects(buttons)
 
@@ -69,6 +75,8 @@ def update():
 def draw():
     clear_canvas()
     title_image.composite_draw(0, '', 600, 300, 1200, 600)
+    coin_image.composite_draw(0, '', 1050, 550, 50, 50)
+    font.draw(1100, 550, f'{server.coin_count}', (255, 255, 255))
     game_world.render()
     update_canvas()
 

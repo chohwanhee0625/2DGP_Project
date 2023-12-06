@@ -1,6 +1,6 @@
 import math
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, load_wav
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, load_wav, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_UP, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT
 
 import game_framework
@@ -318,31 +318,23 @@ class CAR:
             CAR.car_sound.play()
 
     def draw(self):
-        # if self.x <= get_canvas_width() // 2:
-        #     sx = self.x
-        # else:
+        global sx, sy
         sx = get_canvas_width() // 2
-
-        # print(ACCELERATION, CAR_ROLL_KMPH, CAR_MAX_SPEED_KMPH)
-
-        self.image.clip_composite_draw(int(self.frame) * server.model_x, 0, 180, 137, self.dir, '', sx, self.y, 180, 137)
-
+        sy = self.y
+        self.image.clip_composite_draw(int(self.frame) * server.model_x, 0, 180, 137, self.dir, '', sx, sy, 180, 137)
 
     def update(self):
         self.state_machine.update()
-        # self.dir = ???    # map 에서 두 바퀴에 해당하는 좌표값 2개 읽어와서 뺄셈 <x, y> , self.dir = atan2(y/x)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
 
     def get_bb(self):
-        pass
+        return self.x - 90, self.y - 60, self.x + 90, self.y + 60
 
     def find_closest_key(self, target):
         closest_key = min(server.map.maplist, key=lambda x: abs(x - target))
         return closest_key
 
-    def game_over(self):
-
+    def handle_collision(self, group, other):
         pass
-

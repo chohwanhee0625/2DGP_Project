@@ -2,6 +2,7 @@
 car = None
 background = None
 map = None
+coin_count = 0
 
 selection = 0
 model_x = 0

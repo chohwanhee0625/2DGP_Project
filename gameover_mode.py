@@ -12,6 +12,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            server.car.car_sound = None
             game_framework.pop_mode()
             game_framework.change_mode(title_mode)
 
@@ -26,9 +27,6 @@ def init():
     sound = load_wav('sound/Gameover.wav')
     sound.set_volume(30)
     sound.play()
-
-    print(f'{gameover_time}s')
-
     pass
 
 def finish():
