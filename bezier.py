@@ -1,4 +1,4 @@
-import numpy as np
+`import numpy as np
 
 
 def cubic_bezier(t, p0, p1, p2, p3):
@@ -17,6 +17,11 @@ def Bezier(filepath):
 
     # print(len(y_coords))
     # print(len(x_coords))
+
+    # 3) 세그먼트 경계부 p1_next 자동 보정
+    #    경계인 인덱스 j=3,6,9,... 에 대해 p1 at j+1 을 2·p0_next - p2_prev 로 설정
+    for j in range(3, len(y_coords) - 1, 3):
+        y_coords[j + 1] = 2 * y_coords[j] - y_coords[j - 1]
 
     curve_points = []
     for i in range(0, len(x_coords) - 3, 3):
